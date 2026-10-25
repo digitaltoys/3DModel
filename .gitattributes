@@ -1,0 +1,2 @@
+mingyeol-rounded/*.stl filter=lfs diff=lfs merge=lfs -text
+mingyeol-rounded/*.solidcraft filter=lfs diff=lfs merge=lfs -text

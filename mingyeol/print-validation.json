@@ -1,0 +1,12 @@
+{
+  "watertight": true,
+  "winding_consistent": true,
+  "connected_bodies": 1,
+  "dimensions_mm": [
+    44.971900939941406,
+    54.92764186859131,
+    3.0
+  ],
+  "volume_mm3": 3975.7527821393746,
+  "triangles": 2646
+}

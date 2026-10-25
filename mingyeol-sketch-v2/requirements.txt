@@ -1,0 +1,9 @@
+numpy
+scipy
+shapely
+Pillow
+scikit-image
+trimesh
+fonttools
+fast-simplification
+networkx

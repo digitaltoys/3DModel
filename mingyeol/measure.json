@@ -1,0 +1,8 @@
+{
+  "content": [
+    {
+      "text": "{\n  \"bodies\": [\n    {\n      \"area_mm2\": 4322.785550367148,\n      \"bbox\": {\n        \"max\": [\n          22.48595,\n          52.78467000000001,\n          2.999999999999999\n        ],\n        \"min\": [\n          -22.48595,\n          -2.1429699999999796,\n          0.0\n        ]\n      },\n      \"center_of_mass\": [\n        0.10943528044904785,\n        21.299515316933928,\n        1.2037474195366096\n      ],\n      \"density_g_cm3\": 1.29,\n      \"edges\": 1740,\n      \"face_types\": {\n        \"plane\": 604\n      },\n      \"faces\": 604,\n      \"kernel\": {\n        \"edges\": 1740,\n        \"faces\": 604,\n        \"shells\": 1,\n        \"vertices\": 1159\n      },\n      \"mass_g\": 5.128721030112799,\n      \"material\": \"Default\",\n      \"name\": \"Body1\",\n      \"vertices\": 1159,\n      \"volume_mm3\": 3975.7527365215497\n    }\n  ],\n  \"body_count\": 1,\n  \"total\": {\n    \"area_mm2\": 4322.785550367148,\n    \"edges\": 1740,\n    \"faces\": 604,\n    \"mass_g\": 5.128721030112799,\n    \"vertices\": 1159,\n    \"volume_mm3\": 3975.7527365215497\n  }\n}",
+      "type": "text"
+    }
+  ]
+}

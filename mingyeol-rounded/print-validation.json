@@ -1,0 +1,12 @@
+{
+  "source": "SolidCraft MCP exported STL",
+  "watertight": true,
+  "winding_consistent": true,
+  "connected_bodies": 1,
+  "dimensions_mm": [
+    45.045000076293945,
+    58.04499864578247,
+    3.0
+  ],
+  "triangles": 2257554
+}

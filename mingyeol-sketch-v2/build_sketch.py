@@ -69,6 +69,9 @@ inners=unary_union([
  bez((624,338),[ ((599,308),(573,274),(588,244)),((613,202),(655,242),(681,310)),((658,315),(640,326),(624,338))]),
  bez((813,306),[ ((798,284),(817,237),(846,239)),((873,240),(891,273),(888,297)),((860,297),(834,300),(813,306))])])
 ear_rims=unary_union([left.buffer(-8),right.buffer(-8)]).difference(inners).difference(face)
+# Blend the ear roots and face as one relief so rounding cannot leave a dividing groove.
+bunny_surface=unary_union([face,left.buffer(-8),right.buffer(-8)]).buffer(12,quad_segs=12).buffer(-12,quad_segs=12).difference(inners)
+assert bunny_surface.geom_type=='Polygon', 'The face and both ears must share one continuous relief'
 tailL=bez((605,756),[
  ((551,728),(480,678),(434,700)),
  ((392,709),(390,759),(419,783)),
@@ -119,15 +122,15 @@ eyes=unary_union([ellipse(667,426,16.5,22),ellipse(822,426,16.5,22)])
 nose=bez((733,436),[((738,432),(752,432),(757,438)),((760,444),(748,453),(744,456)),((738,451),(727,443),(733,436))])
 from shapely.geometry import LineString
 mouth=unary_union([LineString([(744,451),(744,462),(734,473),(724,473),(717,466)]).buffer(3.4),LineString([(744,462),(753,473),(764,473),(772,466)]).buffer(3.4)])
-# Map the main silhouette to 40 mm in height; the top ring protrudes another 4 mm.
-sx=45/724;sy=40/746
+# Preserve the reference drawing aspect ratio; dimension labels are inconsistent.
+sx=45/724;sy=sx
 def P(g):return translate(scale(g,sx,-sy,origin=(0,0)),-742*sx,893*sy)
-partnames=['left','right','head','face','inners','ear_rims','tailL','tailR','feet','bottom_knot','banner','hearts','plate','wingL','wingR','knot','pawL','pawR','cheeks','eyes','nose','mouth','letters','latin']
+partnames=['left','right','head','face','inners','ear_rims','bunny_surface','tailL','tailR','feet','bottom_knot','banner','hearts','plate','wingL','wingR','knot','pawL','pawR','cheeks','eyes','nose','mouth','letters','latin']
 for name in partnames:globals()[name]=P(globals()[name])
 loopcenter=(0,(893-146)*sy)
 loop=ellipse(*loopcenter,4,4)
-neck=rounded(-3.2,30.6,3.2,40.6,1)
-base=unary_union([left,right,head,tailL,tailR,banner,plate,loop,neck,feet,hearts,wingL,wingR,knot,pawL,pawR,bottom_knot]).buffer(.48,quad_segs=10)
+neck=rounded(-3.2,head.bounds[3]-.6,3.2,loopcenter[1]+.6,1)
+base=unary_union([left,right,head,tailL,tailR,banner,plate,loop,neck,feet,hearts,wingL,wingR,knot,pawL,pawR,bottom_knot,bunny_surface]).buffer(.48,quad_segs=10)
 # Keep width exactly 45 mm, then drill a round 3 mm hole in calibrated mm units.
 width=base.bounds[2]-base.bounds[0]
 xf=45/width
@@ -165,9 +168,8 @@ def pocket(g,floor,rounding=.35):
  m=mask(g);d=edt(m)*res;t=np.clip(d/rounding,0,1);t=t*t*(3-2*t)
  height=np.where(m,height*(1-t)+floor*t,height)
 relief(unary_union([tailL,tailR]).buffer(-.15),2.16,.36)
-relief(ear_rims,2.45,.38)
+relief(bunny_surface,2.4,.5)
 relief(inners,1.95,.18)
-relief(face,2.32,.65)
 relief(feet,2.25,.5)
 relief(bottom_knot,2.7,.5)
 relief(banner.buffer(-.12),2.43,.62)
@@ -198,7 +200,8 @@ if not mesh.is_watertight:
  print('Retaining full resolution to preserve a watertight surface',flush=True)
 # Normalize bed contact to precisely z=0.
 mesh.vertices[:,2]-=mesh.bounds[0,2]
-mesh.apply_scale([45/mesh.extents[0],1,3/mesh.extents[2]])
+reference_height_mm=45*(893-85)/(1108-384)
+mesh.apply_scale([45/mesh.extents[0],reference_height_mm/mesh.extents[1],3/mesh.extents[2]])
 raw=out/'rounded-source.stl';mesh.export(raw)
 validation={'watertight':bool(mesh.is_watertight),'winding_consistent':bool(mesh.is_winding_consistent),'connected_bodies':len(mesh.split()),'dimensions_mm':mesh.extents.tolist(),'triangles':len(mesh.faces),'volume_mm3':float(mesh.volume)}
 print(validation,flush=True);assert validation['watertight'] and validation['connected_bodies']==1

@@ -5,10 +5,21 @@
   "connected_bodies": 1,
   "dimensions_mm": [
     45.0,
-    44.849998354911804,
+    50.22099441289902,
     3.0
   ],
-  "triangles": 430396,
-  "volume_mm3": 3347.6534308591617,
-  "keyring_hole_design_mm": 3.0
+  "triangles": 483644,
+  "volume_mm3": 3795.2946408890552,
+  "keyring_hole_design_mm": 3.0,
+  "reference_drawing_width_height_px": [
+    724,
+    808
+  ],
+  "face_ears_single_relief": true,
+  "keyring_hole_mesh_width_height_mm": [
+    [
+      3.1081357746508815,
+      3.0505831246290995
+    ]
+  ]
 }

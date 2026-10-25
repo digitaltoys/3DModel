@@ -8,13 +8,7 @@
     44.849998354911804,
     3.0
   ],
-  "triangles": 429490,
-  "volume_mm3": 3363.5099302659382,
-  "keyring_hole_design_mm": 3.0,
-  "keyring_hole_mesh_width_height_mm": [
-    [
-      3.1081262574551936,
-      3.1112659816282715
-    ]
-  ]
+  "triangles": 430396,
+  "volume_mm3": 3347.6534308591617,
+  "keyring_hole_design_mm": 3.0
 }

@@ -38,6 +38,10 @@ def extract_glyphs(bounds,ids):
   regions.append(g)
  return unary_union(regions).buffer(1.15,quad_segs=6).simplify(.8,preserve_topology=True)
 letters=extract_glyphs((484,510,1005,735),[21,23,24,29])
+from shapely.geometry import LineString
+# Open-ended strokes in the raster sketch need explicit gaps in the final rieul.
+rieul_gaps=unary_union([LineString([(769,663),(925,663)]).buffer(3.8),LineString([(836,694),(1001,694)]).buffer(3.8)])
+letters=letters.difference(rieul_gaps)
 latin=extract_glyphs((567,733,923,815),[4,5,6,7,8,9,11,12])
 left=bez((594,366),[
  ((531,331),(491,280),(507,222)),
@@ -59,6 +63,7 @@ head=bez((594,366),[
  ((719,508),(686,506),(655,514)),
  ((603,516),(554,507),(544,470)),
  ((535,433),(552,393),(594,366))])
+head=ellipse(742,410,190,112)
 face=head.buffer(-7)
 inners=unary_union([
  bez((624,338),[ ((599,308),(573,274),(588,244)),((613,202),(655,242),(681,310)),((658,315),(640,326),(624,338))]),
@@ -121,7 +126,7 @@ partnames=['left','right','head','face','inners','ear_rims','tailL','tailR','fee
 for name in partnames:globals()[name]=P(globals()[name])
 loopcenter=(0,(893-146)*sy)
 loop=ellipse(*loopcenter,4,4)
-neck=rounded(-2.8,35.6,2.8,40.6,1)
+neck=rounded(-3.2,30.6,3.2,40.6,1)
 base=unary_union([left,right,head,tailL,tailR,banner,plate,loop,neck,feet,hearts,wingL,wingR,knot,pawL,pawR,bottom_knot]).buffer(.48,quad_segs=10)
 # Keep width exactly 45 mm, then drill a round 3 mm hole in calibrated mm units.
 width=base.bounds[2]-base.bounds[0]
@@ -193,6 +198,7 @@ if not mesh.is_watertight:
  print('Retaining full resolution to preserve a watertight surface',flush=True)
 # Normalize bed contact to precisely z=0.
 mesh.vertices[:,2]-=mesh.bounds[0,2]
+mesh.apply_scale([45/mesh.extents[0],1,3/mesh.extents[2]])
 raw=out/'rounded-source.stl';mesh.export(raw)
 validation={'watertight':bool(mesh.is_watertight),'winding_consistent':bool(mesh.is_winding_consistent),'connected_bodies':len(mesh.split()),'dimensions_mm':mesh.extents.tolist(),'triangles':len(mesh.faces),'volume_mm3':float(mesh.volume)}
 print(validation,flush=True);assert validation['watertight'] and validation['connected_bodies']==1

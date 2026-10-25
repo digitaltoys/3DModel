@@ -1,12 +1,20 @@
 {
+  "source": "SolidCraft MCP exported STL",
   "watertight": true,
   "winding_consistent": true,
   "connected_bodies": 1,
   "dimensions_mm": [
-    45.04500007752449,
-    44.84999836125185,
-    3.0011199564480013
+    45.0,
+    44.849998354911804,
+    3.0
   ],
-  "triangles": 427106,
-  "volume_mm3": 3352.462519239609
+  "triangles": 429490,
+  "volume_mm3": 3363.5099302659382,
+  "keyring_hole_design_mm": 3.0,
+  "keyring_hole_mesh_width_height_mm": [
+    [
+      3.1081262574551936,
+      3.1112659816282715
+    ]
+  ]
 }
